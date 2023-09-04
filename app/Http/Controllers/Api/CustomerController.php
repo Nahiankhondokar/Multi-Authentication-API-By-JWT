@@ -32,7 +32,7 @@ class CustomerController extends Controller
         $customer = Auth::guard('customer')->user();
         return response()->json([
                 'status' => 'success',
-                'user' => $customer,
+                'customer' => $customer,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
@@ -43,17 +43,17 @@ class CustomerController extends Controller
 
     public function register(CustomerRequest $request){
 
-        $user = Customer::create([
+        $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        $token = Auth::login($user);
+        $token = Auth::login($customer);
         return response()->json([
             'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
+            'message' => 'Customer created successfully',
+            'customer' => $customer,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -74,7 +74,7 @@ class CustomerController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'user' => Auth::user(),
+            'customer' => Auth::user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
@@ -83,11 +83,11 @@ class CustomerController extends Controller
     }
 
     public function adminList(){
-        $admin = Customer::query()->get();
+        $customer = Customer::query()->get();
 
         return response()->json([
             'status' => 'success',
-            'user' => $admin,
+            'customer' => $customer,
      
         ]);
     }
