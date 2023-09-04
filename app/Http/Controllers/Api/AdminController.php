@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:admin', ['except' => ['login','register']]);
-    // }
 
     public function login(AdminLoginRequest $request)
     {
@@ -30,10 +26,10 @@ class AdminController extends Controller
             ], 401);
         }
 
-        $user = Auth::guard('admin')->user();
+        $admin = Auth::guard('admin')->user();
         return response()->json([
                 'status' => 'success',
-                'user' => $user,
+                'admin' => $admin,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
@@ -44,17 +40,17 @@ class AdminController extends Controller
 
     public function register(AdminRequest $request){
 
-        $user = Admin::create([
+        $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        $token = Auth::login($user);
+        $token = Auth::login($admin);
         return response()->json([
             'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
+            'message' => 'Admin created successfully',
+            'admin' => $admin,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -64,10 +60,10 @@ class AdminController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return response()->json([
             'status' => 'success',
-            'message' => 'Successfully logged out',
+            'message' => 'Successfully admin logged out',
         ]);
     }
 
@@ -75,7 +71,7 @@ class AdminController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'user' => Auth::user(),
+            'admin' => Auth::user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
@@ -88,7 +84,7 @@ class AdminController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'user' => $admin,
+            'admin' => $admin,
      
         ]);
     }
