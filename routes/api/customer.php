@@ -8,3 +8,4 @@ Route::get('customer/logout', [CustomerController::class, 'logout']);
 Route::post('customer/register', [CustomerController::class, 'register']);
 
 Route::get('customer/list', [CustomerController::class, 'adminList']);
+Route::get('customer/refresh', [CustomerController::class, 'refresh']);
